@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Apify Amazon Product Scraper API
+  version: 1.0.0
+  description: API for searching Amazon products using Apify
+servers:
+  - url: https://api.apify.com/v2
+paths:
+  /acts/junglee~amazon-bestsellers/runs:
+    post:
+      summary: Search for Amazon products
+      description: Fetch products from Amazon based on a search query
+      parameters:
+        - name: token
+          in: query
+          required: true
+          description: Your Apify API key
+          schema:
+            type: string
+        - name: body
+          in: body
+          required: true
+          description: JSON body containing the search query and other parameters
+          schema:
+            type: object
+            properties:
+              search:
+                type: string
+                description: Search query for products (e.g., electronics, books, etc.)
+              maxResults:
+                type: integer
+                description: Maximum number of results to return
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Item'
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Product title
+        price:
+          type: string
+          description: Product price
+        url:
+          type: string
+          description: URL of the product on Amazon
+        rating:
+          type: string
+          description: Product rating (if available)
+        reviews:
+          type: string
+          description: Number of reviews (if available)
